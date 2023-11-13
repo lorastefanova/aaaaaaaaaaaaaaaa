@@ -1,0 +1,26 @@
+.table {
+    width: 700px;
+    height:100%;
+    text-align: center;
+    border-radius: 15px;
+    overflow: hidden;
+}
+
+.trHead {
+    color: #ffffff;
+    background: #66b5ff;
+    height: 50px;
+}
+
+.trBody {
+    background: #ffffff;
+    height: 50px;
+}
+
+.trBody:hover {
+    background: #bbdeff;
+}
+
+td {
+    height: 100%;
+}

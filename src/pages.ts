@@ -1,0 +1,1 @@
+export type Page =  "Login" | "Register" | "Products" | "Policies" | "Clients" | "Insurer" | "InsurerDetails"

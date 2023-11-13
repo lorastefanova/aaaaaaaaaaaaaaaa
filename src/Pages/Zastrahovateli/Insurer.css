@@ -1,0 +1,21 @@
+.btn-container{
+    display: flex;
+    flex-direction: row;
+}
+
+.container{
+    display: flex;
+    align-items: start;
+    justify-content: space-around;
+    padding-top: 50px;
+    height: 100%;
+}
+
+.table{
+    width:200px;
+    height: 700px;
+}
+
+.left-form-container{
+
+}
