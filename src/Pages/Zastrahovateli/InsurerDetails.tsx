@@ -306,10 +306,10 @@ return (
                             <input value={insCompanyName} type="text" name="insCompanyName" placeholder="Име на застраховател" onChange={(e) => setInsCompanyName(e.target.value)} disabled={true}/>
                         </div>
                         <div className="input-container">
-                            <input value={insProdName} type="text" name="insProdName" placeholder="insProdName" onChange={(e) => setInsProdName(e.target.value)}/>
+                            <input value={insProdName} type="text" name="insProdName" placeholder="Наименование" onChange={(e) => setInsProdName(e.target.value)}/>
                         </div>
                         <div className="input-container">
-                            <input value={insProdDeferred} type="text" name="insProdDeferred" placeholder="insProdDeferred" onChange={(e) => setInsProdDeferred(e.target.value)}/>
+                            <input value={insProdDeferred} type="text" name="insProdDeferred" placeholder="Разсрочено плащане" onChange={(e) => setInsProdDeferred(e.target.value)}/>
                         </div>
                         <div className="input-container">
                             <select

@@ -223,7 +223,7 @@ const Insurer = (props: Props) => {
                                 <td>{row.insCompanyAddr}</td>
                                 <td>{row.insCompanyContact}</td>
                                 <td>{row.insCompanyTel}</td>
-                                <td>{row.insCompanyTel}</td>
+                                <td>НЕ СЕ ВРЪЩА ОТ БЕКЕНДА</td>
                             </tr>
                         ))}
                         </tbody>
