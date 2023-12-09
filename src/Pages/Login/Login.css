@@ -70,12 +70,6 @@ input:disabled{
     border-bottom-color: #c1c1c1;
 }
 
-.signup-forgot-password{
-    display: flex;
-    justify-content: space-between;
-    width: 280px;
-}
-
 .invis-btn{
     background: transparent;
     border: none;
