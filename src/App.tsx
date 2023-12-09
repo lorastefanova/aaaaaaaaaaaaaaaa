@@ -28,7 +28,7 @@ function App() {
       case "Login":
         return<Login/>;
       case "Register":
-        return<Register/>;
+        return<Register setCurrentPage={handlePageChange} setIsLoggedIn={setIsLogged}/>;
       case "Clients":
         return<Clients/>
       case "Policies":
