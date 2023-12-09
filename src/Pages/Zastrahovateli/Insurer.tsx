@@ -15,7 +15,11 @@ interface DataRowType {
     insCompanyId: number;
     insCompanyName: string;
     insCompanyBulstat: string;
-    insTypeId: number;
+    insCompanyAddr: string,
+    insCompanyContact: string,
+    insCompanyTel: string
+
+
 }
 
 const Insurer = (props: Props) => {
@@ -43,7 +47,6 @@ const Insurer = (props: Props) => {
     const [isDisabled, setIsDisabled] = useState(false);
 
     useEffect(() => {
-        // Fetch data from the endpoint
         fetch('http://localhost:8080/nomenclature/ins-types')
             .then(response => response.json())
             .then(data => setInsuranceTypes(data))
@@ -199,8 +202,11 @@ const Insurer = (props: Props) => {
                         <thead className="thead">
                         <tr className="trHead">
                             <th>Код на застрахователя</th>
-                            <th>Наименование</th>
+                            <th>Име на застраховател</th>
                             <th>Булстат</th>
+                            <th>Адрес</th>
+                            <th>Контакт</th>
+                            <th>Телефон</th>
                             <th>Тип застраховка</th>
                         </tr>
                         </thead>
@@ -213,8 +219,11 @@ const Insurer = (props: Props) => {
                             >
                                 <td>{row.insCompanyId}</td>
                                 <td>{row.insCompanyName}</td>
-                                <td>{row.insCompanyName}</td>
-                                <td>{row.insTypeId}</td>
+                                <td>{row.insCompanyBulstat}</td>
+                                <td>{row.insCompanyAddr}</td>
+                                <td>{row.insCompanyContact}</td>
+                                <td>{row.insCompanyTel}</td>
+                                <td>{row.insCompanyTel}</td>
                             </tr>
                         ))}
                         </tbody>

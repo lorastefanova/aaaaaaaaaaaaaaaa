@@ -6,10 +6,15 @@ type Props = {
 };
 
 interface DataRowType {
-    insCompanyId: number;
-    insCompanyName: string;
-    insCompanyBulstat: string;
-    insTypeId: number;
+    insProdCode: number
+    insProdName: string,
+    insProdDeferred: string,
+    insProdPremPerc: number,
+    insProdComissPerc: number,
+    insTypeDto: {
+        insTypeId: number;
+        insTypeName: string;
+    }
 }
 
 interface InsuranceType {
@@ -32,25 +37,24 @@ const InsurerDetails = (props: Props) => {
     const [insProdCode, setInsProdCode] = useState<number>();
     const [insProdName, setInsProdName] = useState<string>("");
     const [insProdDeferred, setInsProdDeferred] = useState<string>("");
-    const [insProdPremPerc, setInsProdPremPerc] = useState<number>();
-    const [insProdComissPerc, setInsProdComissPerc] = useState<number>();
 
     const [insuranceTypes, setInsuranceTypes] = useState<InsuranceType[]>([]);
     const [selectedInsuranceType, setSelectedInsuranceType] = useState<string>('');
 
     const [error, setError] = useState<string | null>(null);
     const [errorName, setErrorName] = useState<string | null>(null);
+    const [change, setChange] = useState<number>(0);
 
     useEffect(() => {
-        if(insProdCode && insProdName && insProdDeferred && insProdPremPerc && insProdComissPerc && selectedInsuranceType){
+        if(insProdCode && insProdName && insProdDeferred && selectedInsuranceType){
             setIsDisabledButton(false)
         } else {
             setIsDisabledButton(true)
         }
-    },[insProdCode, insProdName, insProdDeferred, insProdPremPerc, insProdComissPerc, selectedInsuranceType])
+    },[insProdCode, insProdName, insProdDeferred, selectedInsuranceType])
 
     useEffect(() => {
-        fetch('http://localhost:8080/ins-products')
+        fetch(`http://localhost:8080/ins-products/ins-company?insCompanyId=${props.insCompanyId}`, )
             .then(response => response.json())
             .then(data => {
                 setAllData(data)
@@ -58,7 +62,7 @@ const InsurerDetails = (props: Props) => {
             .catch(error => {
                 console.error('Error fetching data:', error);
             });
-    }, [])
+    },[change])
 
     useEffect(() => {
         const fetchData = async () => {
@@ -104,8 +108,6 @@ const InsurerDetails = (props: Props) => {
                     insProdCode,
                     insProdName,
                     insProdDeferred,
-                    insProdPremPerc,
-                    insProdComissPerc,
                     insTypeDto,
                     insCompanyName
                 }),
@@ -113,7 +115,10 @@ const InsurerDetails = (props: Props) => {
 
             if (response.ok) {
                 const result = await response.json();
+                setChange(change + 1)
+                setShowPopup(false)
             } else {
+
             }
         } catch (error) {
             console.error('Failed to post data');
@@ -260,22 +265,26 @@ return (
                 <table className="table">
                     <thead className="thead">
                     <tr className="trHead">
-                        <th>Код на застрахователя</th>
-                        <th>Наименование</th>
-                        <th>Булстат</th>
-                        <th>Вид на застраховка</th>
+                        <th>insProdCode</th>
+                        <th>insProdName</th>
+                        <th>insProdDeferred</th>
+                        <th>insProdPremPerc</th>
+                        <th>insProdComissPerc</th>
+                        <th>insTypeDto.name</th>
                     </tr>
                     </thead>
                     <tbody className="tbody">
                     {allData.map((row: DataRowType) => (
                         <tr
                             className="trBody"
-                            key={row.insCompanyId}
+                            key={row.insProdCode}
                         >
-                            <td>{row.insCompanyId}</td>
-                            <td>{row.insCompanyName}</td>
-                            <td>{row.insCompanyName}</td>
-                            <td>{row.insTypeId}</td>
+                            <td>{row.insProdCode}</td>
+                            <td>{row.insProdName}</td>
+                            <td>{row.insProdDeferred}</td>
+                            <td>{row.insProdPremPerc}</td>
+                            <td>{row.insProdComissPerc}</td>
+                            <td>{row.insTypeDto.insTypeName}</td>
                         </tr>
                     ))}
                     </tbody>
@@ -300,12 +309,6 @@ return (
                         </div>
                         <div className="input-container">
                             <input value={insProdDeferred} type="text" name="insProdDeferred" placeholder="insProdDeferred" onChange={(e) => setInsProdDeferred(e.target.value)}/>
-                        </div>
-                        <div className="input-container">
-                            <input value={insProdPremPerc} type="number" name="insProdPremPerc" placeholder="insProdPremPerc" onChange={(e) => setInsProdPremPerc(parseInt(e.target.value))}/>
-                        </div>
-                        <div className="input-container">
-                            <input value={insProdComissPerc} type="number" name="insProdComissPerc" placeholder="insProdComissPerc" onChange={(e) => setInsProdComissPerc(parseInt(e.target.value))}/>
                         </div>
                         <div className="input-container">
                             <select
