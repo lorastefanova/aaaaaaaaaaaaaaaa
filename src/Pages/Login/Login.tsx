@@ -7,8 +7,32 @@ type Props = {
 };
 
 const Login = (props: Props) => {
-    const [email, setEmail] = useState<String>("");
+    
+    const [username, setUsername] = useState<String>("");
     const [password, setPassword] = useState<String>("");
+
+    const handleLogin = async () => {
+        try {
+          const response = await fetch('http://localhost:8080/users/login', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              username: username,
+              password: password,
+            }),
+          });
+    
+          if (response.ok) {
+            console.log('Login successful');
+          } else {
+            console.error('Login failed:', response.statusText);
+          }
+        } catch (error) {
+          console.error('Error during login:', error);
+        }
+      };
 
     return (
         <div className="login-container">
@@ -20,13 +44,13 @@ const Login = (props: Props) => {
                 <div className="form-container">
                     <form>
                         <div className="input-container">
-                            <input type="email" name="email" placeholder="Email" onChange={(e) => setEmail(e.target.value)}/>
+                            <input type="username" required={true} name="username" placeholder="Username" onChange={(e) => setUsername(e.target.value)}/>
                         </div>
                         <div className="input-container">
-                            <input type="password" name="password" placeholder="Password" onChange={(e) => setPassword(e.target.value)}/>
+                            <input type="password" required = {true} name="password" placeholder="Password" onChange={(e) => setPassword(e.target.value)}/>
                         </div>
                         <div className="input-container">
-                            <button className="submit-btn">Log in</button>
+                            <button className="submit-btn" onClick={handleLogin}>Log in</button>
                         </div>
                     </form>
                 </div>
