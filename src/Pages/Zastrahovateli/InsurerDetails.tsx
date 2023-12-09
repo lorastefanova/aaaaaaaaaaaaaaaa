@@ -115,6 +115,9 @@ const InsurerDetails = (props: Props) => {
                 const result = await response.json();
                 setChange(change + 1)
                 setShowPopup(false)
+                setInsProdName("");
+                setInsProdDeferred("")
+                setSelectedInsuranceType("")
             } else {
 
             }
@@ -193,6 +196,9 @@ const InsurerDetails = (props: Props) => {
 
     const close = () => {
         setShowPopup(false);
+        setInsProdName("");
+        setInsProdDeferred("")
+        setSelectedInsuranceType("")
     }
 
     const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
