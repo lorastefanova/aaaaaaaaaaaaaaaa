@@ -101,6 +101,8 @@ const Objects = (props: Props) => {
             if (response.ok) {
                 const result = await response.json();
                 setInsObjectTypeName("")
+                props.setInsObjectTypeId(result.insObjectTypeId)
+                props.setCurrentPage("ObjectDetails");
                 setShowPopup(false)
             } else {
                 setErrorName('Object name must be unique.');
