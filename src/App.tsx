@@ -17,6 +17,7 @@ import ObjectDetails from './Pages/Objects/ObjectDetails';
 function App() {
   const [currentPage, setCurrentPage] = useState<Page>("Login");
   const [insCompanyId, setInsCompanyId] = useState<number>(0);
+  const [insProductId, setInsProductId] = useState<number>(0);
   const [isLogged, setIsLogged] = useState<boolean>(false);
   const [insObjectTypeId, setInsObjectTypeId] = useState<number>(0);
 
@@ -37,7 +38,7 @@ function App() {
       case "Policies":
         return<Policies/>
       case "Products":
-        return<Products/>
+        return<Products setCurrentPage={handlePageChange} setInsProdCode={setInsProductId}/>
       case "InsurerDetails":
         return<InsurerDetails insCompanyId={insCompanyId} setCurrentPage={handlePageChange}/>
       case "Objects":

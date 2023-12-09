@@ -14,83 +14,6 @@ const ProductsDetails = (props: Props) => {
 
     const [isDisabled, setIsDisabled] = useState<boolean>(true);
 
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await fetch(`http://localhost:8080/ins-companies/${props.insCompanyId}`);
-
-                if (response.ok) {
-                    const result = await response.json();
-                    setInsCompanyName(result.insCompanyName);
-                    setInsCompanyBulstat(result.insCompanyBulstat);
-                    setInsCompanyAddr(result.insCompanyAddr);
-                    setInsCompanyContact(result.insCompanyContact);
-                    setInsCompanyTel(result.insCompanyTel);
-                } else {
-                    console.error(`Error: ${response.status}`);
-                }
-            } catch (error) {
-                console.error('Error fetching data:', error);
-            }
-        };
-
-        fetchData();
-    }, []);
-
-    const edit = () => {
-        setIsDisabled(false);
-    }
-
-    const show = () => {
-        props.setCurrentPage("Products")
-    }
-
-    const del = () => {
-        fetch(`http://localhost:8080/ins-companies/${props.insCompanyId}`, {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        })
-            .then(response => {
-                if (response.ok) {
-                    props.setCurrentPage("Insurer") //ne ti bachka deleta
-                } else {
-                    console.error('Error deleting insurance company');
-                }
-            })
-            .catch(error => {
-                console.error('Error deleting insurance company', error);
-            });
-    }
-
-    const save = async () => {
-        try {
-            const response = await fetch('http://localhost:8080/ins-companies', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    insCompanyName,
-                    insCompanyBulstat,
-                    insCompanyAddr,
-                    insCompanyContact,
-                    insCompanyTel,
-                }),
-            });
-
-            if (response.ok) {
-                console.log('Data updated successfully');
-            } else {
-                console.error('Failed to post data');
-            }
-        } catch (error) {
-            console.error('Error posting data:', error);
-        }
-        setIsDisabled(true);
-    }
-
     return (
         <div className="container">
             <div className="left-form-container">
@@ -115,16 +38,16 @@ const ProductsDetails = (props: Props) => {
                     </div>
                     <div className="btn-container">
                         <div className="input-container">
-                            <button type="button" className="submit-btn" onClick={save}>Запази</button>
+                            <button type="button" className="submit-btn" >Запази</button>
                         </div>
                         <div className="input-container">
-                            <button type="button" className="submit-btn" onClick={edit}>Редактирай</button>
+                            <button type="button" className="submit-btn" >Редактирай</button>
                         </div>
                         <div className="input-container">
-                            <button type="button" className="submit-btn" onClick={del}>Изтрий</button>
+                            <button type="button" className="submit-btn" >Изтрий</button>
                         </div>
                         <div className="input-container">
-                            <button type="button" className="submit-btn" onClick={show}>Продукти</button>
+                            <button type="button" className="submit-btn" >Продукти</button>
                         </div>
                     </div>
                 </form>
