@@ -26,7 +26,6 @@ const Objects = (props: Props) => {
 
     const [errorName, setErrorName] = useState<string | null>(null);
     const [isDisabled, setIsDisabled] = useState(false);
-    const [change, setChange] = useState<number>(0);
 
     const handleOnClickOnTable = (num: number) => {
         props.setInsObjectTypeId(num);
@@ -101,7 +100,6 @@ const Objects = (props: Props) => {
 
             if (response.ok) {
                 const result = await response.json();
-                setChange(change + 1)
                 setInsObjectTypeName("")
                 setShowPopup(false)
             } else {
@@ -112,16 +110,6 @@ const Objects = (props: Props) => {
         }
     }
 
-    useEffect(() => {
-        fetch(`http://localhost:8080/ins-object-types`)
-            .then(response => response.json())
-            .then(data => {
-                setAllData(data)
-            })
-            .catch(error => {
-                console.error('Error fetching data:', error);
-            });
-    },[change])
 
 
     return (

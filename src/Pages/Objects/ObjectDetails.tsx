@@ -61,7 +61,6 @@ const ObjectDetails = (props: Props) => {
             });
 
             if (response.ok) {
-                console.log('Data updated successfully');
                 setIsDisabled(true);
             } else {
                 setError('Object name must be unique!');

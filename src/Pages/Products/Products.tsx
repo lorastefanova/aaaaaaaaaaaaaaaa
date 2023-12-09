@@ -206,19 +206,19 @@ const Products = (props: Props) => {
             <div className="left-form-container">
                 <form>
                     <div className="input-container">
-                        <input value={insProdCode} type="text" name="insProdCode" placeholder="insProdCode" onChange={(e) => setInsProdCode(e.target.value)}/>
+                        <input value={insProdCode} type="text" name="insProdCode" placeholder="Код на продукт" onChange={(e) => setInsProdCode(e.target.value)}/>
                     </div>
                     <div className="input-container">
-                        <input value={insProdName} type="text" name="insProdName" placeholder="insProdName" onChange={(e) => setInsProdName(e.target.value)}/>
+                        <input value={insProdName} type="text" name="insProdName" placeholder="Наименование" onChange={(e) => setInsProdName(e.target.value)}/>
                     </div>
                     <div className="input-container">
                         <input value={insProdDeferred} type="text" name="insProdDeferred" placeholder="Разсрочено плащане" onChange={(e) => setInsProdDeferred(e.target.value)}/>
                     </div>
                     <div className="input-container">
-                        <input value={insProdPremPerc} type="text" name="insProdPremPerc" placeholder="insProdPremPerc" onChange={(e) => setInsProdPermPerc(e.target.value)}/>
+                        <input value={insProdPremPerc} type="text" name="insProdPremPerc" placeholder="Застрахователна премия" onChange={(e) => setInsProdPermPerc(e.target.value)}/>
                     </div>
                     <div className="input-container">
-                        <input value={insProdComissPerc} type="text" name="insProdComissPerc" placeholder="insProdComissPerc" onChange={(e) => setInsComissPerc(e.target.value)}/>
+                        <input value={insProdComissPerc} type="text" name="insProdComissPerc" placeholder="Комисионна" onChange={(e) => setInsComissPerc(e.target.value)}/>
                     </div>
                     <div className="input-container">
                         <select
@@ -240,7 +240,7 @@ const Products = (props: Props) => {
                             value={selectedCompany}
                             onChange={(e) => setSelectedCompany(e.target.value)}
                         >
-                            <option value="" disabled>selectedCompany</option>
+                            <option value="" disabled>Компания</option>
                             {allCompanies.map((type) => (
                                 <option key={type.insCompanyName} value={type.insCompanyName}>
                                     {type.insCompanyName}
@@ -297,10 +297,10 @@ const Products = (props: Props) => {
                     <div className="popup-inner">
                         <form>
                             <div className="input-container">
-                                <input type="text" name="insProdName" placeholder="insProdName" onChange={handleInsProdNameChange}/>
+                                <input type="text" name="insProdName" placeholder="Наименование" onChange={handleInsProdNameChange}/>
                             </div>
                             <div className="input-container">
-                                <input type="text" name="insProdDeferred" placeholder="insProdDeferred" onChange={handleInsProdDefChange}/>
+                                <input type="text" name="insProdDeferred" placeholder="Разсрочено плащане" onChange={handleInsProdDefChange}/>
                             </div>
                             <div className="input-container">
                                 <select
@@ -322,7 +322,7 @@ const Products = (props: Props) => {
                                     value={selectedCompanyNew}
                                     onChange={(e) => setSelectedCompanyNew(e.target.value)}
                                 >
-                                    <option value="" disabled>insCompanyNameNew</option>
+                                    <option value="" disabled>Компания</option>
                                     {allCompanies.map((type) => (
                                         <option key={type.insCompanyName} value={type.insCompanyName}>
                                             {type.insCompanyName}
