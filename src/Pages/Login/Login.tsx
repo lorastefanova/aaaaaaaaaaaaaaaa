@@ -1,15 +1,25 @@
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import logoImage from "../../assets/company.png";
 import "./Login.css";
 
 type Props = {
-
+    setIsLoggedIn: (log: boolean) => void;
+    setCurrentPage: (page: string) => void;
 };
 
 const Login = (props: Props) => {
     
     const [username, setUsername] = useState<String>("");
     const [password, setPassword] = useState<String>("");
+        const [isDisabled, setIsDisabled] = useState<boolean>(true);
+    
+    useEffect(() => {
+        if(username && password){
+            setIsDisabled(false)
+        } else {
+            setIsDisabled(true)
+        }
+    },[username, password])
 
     const handleLogin = async () => {
         try {
@@ -25,6 +35,8 @@ const Login = (props: Props) => {
           });
     
           if (response.ok) {
+            props.setCurrentPage("Insurer")
+            props.setIsLoggedIn(true)
             console.log('Login successful');
           } else {
             console.error('Login failed:', response.statusText);
@@ -50,7 +62,7 @@ const Login = (props: Props) => {
                             <input type="password" required = {true} name="password" placeholder="Password" onChange={(e) => setPassword(e.target.value)}/>
                         </div>
                         <div className="input-container">
-                            <button className="submit-btn" onClick={handleLogin}>Log in</button>
+                            <button className="submit-btn" type="button" disabled={isDisabled} onClick={handleLogin}>Log in</button>
                         </div>
                     </form>
                 </div>

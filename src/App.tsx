@@ -26,7 +26,7 @@ function App() {
       case "Insurer":
         return<Insurer setCurrentPage={handlePageChange} setInsCompanyId={setInsCompanyId}/>;
       case "Login":
-        return<Login/>;
+        return<Login setCurrentPage={handlePageChange} setIsLoggedIn={setIsLogged}/>;
       case "Register":
         return<Register setCurrentPage={handlePageChange} setIsLoggedIn={setIsLogged}/>;
       case "Clients":
