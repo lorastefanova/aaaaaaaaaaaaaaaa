@@ -201,7 +201,7 @@ const Insurer = (props: Props) => {
                             <th>Код на застрахователя</th>
                             <th>Наименование</th>
                             <th>Булстат</th>
-                            <th>Вид на застраховка</th>
+                            <th>Тип застраховка</th>
                         </tr>
                         </thead>
                         <tbody className="tbody">

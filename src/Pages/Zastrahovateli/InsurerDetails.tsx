@@ -30,8 +30,8 @@ const InsurerDetails = (props: Props) => {
     const [showPopup, setShowPopup] = useState(false);
 
     const [insProdCode, setInsProdCode] = useState<number>();
-    const [insProdName, setInsProdName] = useState<string>();
-    const [insProdDeferred, setInsProdDeferred] = useState<string>();
+    const [insProdName, setInsProdName] = useState<string>("");
+    const [insProdDeferred, setInsProdDeferred] = useState<string>("");
     const [insProdPremPerc, setInsProdPremPerc] = useState<number>();
     const [insProdComissPerc, setInsProdComissPerc] = useState<number>();
 
