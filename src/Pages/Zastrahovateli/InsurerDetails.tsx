@@ -34,7 +34,6 @@ const InsurerDetails = (props: Props) => {
     const [allData, setAllData] = useState<DataRowType[]>();
     const [showPopup, setShowPopup] = useState(false);
 
-    const [insProdCode, setInsProdCode] = useState<number>();
     const [insProdName, setInsProdName] = useState<string>("");
     const [insProdDeferred, setInsProdDeferred] = useState<string>("");
 
@@ -46,12 +45,12 @@ const InsurerDetails = (props: Props) => {
     const [change, setChange] = useState<number>(0);
 
     useEffect(() => {
-        if(insProdCode && insProdName && insProdDeferred && selectedInsuranceType){
+        if(insProdName && insProdDeferred && selectedInsuranceType){
             setIsDisabledButton(false)
         } else {
             setIsDisabledButton(true)
         }
-    },[insProdCode, insProdName, insProdDeferred, selectedInsuranceType])
+    },[insProdName, insProdDeferred, selectedInsuranceType])
 
     useEffect(() => {
         fetch(`http://localhost:8080/ins-products/ins-company?insCompanyId=${props.insCompanyId}`, )
@@ -105,7 +104,6 @@ const InsurerDetails = (props: Props) => {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    insProdCode,
                     insProdName,
                     insProdDeferred,
                     insTypeDto,
@@ -300,9 +298,6 @@ return (
                     <form>
                         <div className="input-container">
                             <input value={insCompanyName} type="text" name="insCompanyName" placeholder="Име на застраховател" onChange={(e) => setInsCompanyName(e.target.value)} disabled={true}/>
-                        </div>
-                        <div className="input-container">
-                            <input value={insProdCode} type="number" name="insProdCode" placeholder="insProdCode" onChange={(e) => setInsProdCode(parseInt(e.target.value))}/>
                         </div>
                         <div className="input-container">
                             <input value={insProdName} type="text" name="insProdName" placeholder="insProdName" onChange={(e) => setInsProdName(e.target.value)}/>
