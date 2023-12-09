@@ -18,6 +18,7 @@ function App() {
   const [currentPage, setCurrentPage] = useState<Page>("Login");
   const [insCompanyId, setInsCompanyId] = useState<number>(0);
   const [insProductId, setInsProductId] = useState<number>(0);
+  const [insPolicyId, setInsPolicyId] = useState<number>(0);
   const [isLogged, setIsLogged] = useState<boolean>(false);
   const [insObjectTypeId, setInsObjectTypeId] = useState<number>(0);
 
@@ -40,7 +41,9 @@ function App() {
       case "Products":
         return<Products setCurrentPage={handlePageChange} setInsProdCode={setInsProductId}/>
       case "InsurerDetails":
-        return<InsurerDetails insCompanyId={insCompanyId} setCurrentPage={handlePageChange}/>
+        return<InsurerDetails insCompanyId={insCompanyId} setCurrentPage={handlePageChange} setInsProductId={setInsProductId}/>
+      case "ProductsDetails":
+        return<ProductsDetails insProductId={insProductId} setCurrentPage={handlePageChange} setPolicyId={setInsPolicyId}/>
       case "Objects":
         return<Objects setCurrentPage={handlePageChange} setInsObjectTypeId={setInsObjectTypeId}/>
       case "ObjectDetails":

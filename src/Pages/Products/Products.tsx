@@ -150,7 +150,7 @@ const Products = (props: Props) => {
 
     const handleOnClickOnTable = (num: number) => {
         props.setInsProdCode(num);
-        props.setCurrentPage("InsurerDetails");
+        props.setCurrentPage("ProductsDetails");
     }
 
     const handleSearch = () => {

@@ -2,6 +2,7 @@ import React, {useEffect, useState} from "react";
 
 type Props = {
     insCompanyId: number;
+    setInsProductId: (num: number) =>void;
     setCurrentPage: (page: string) => void;
 };
 
@@ -224,6 +225,11 @@ const InsurerDetails = (props: Props) => {
 
     }
 
+    const handleOnClickOnTable = (num: number) => {
+        props.setInsProductId(num);
+        props.setCurrentPage("ProductsDetails");
+    }
+
 return (
     <div className="container">
         <div className="left-form-container">
@@ -281,6 +287,7 @@ return (
                     {allData.map((row: DataRowType) => (
                         <tr
                             className="trBody"
+                            onClick={() => handleOnClickOnTable(row.insProdCode)}
                             key={row.insProdCode}
                         >
                             <td>{row.insProdCode}</td>
