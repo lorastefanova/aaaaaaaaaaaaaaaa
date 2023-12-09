@@ -8,7 +8,12 @@ type Props = {
 
 const Register = (props: Props) => {
     const [email, setEmail] = useState<String>("");
+    const [username, setUsername] = useState<String>("");
     const [password, setPassword] = useState<String>("");
+
+    const login = () => {
+
+    }
 
     return (
         <div className="login-container">
@@ -20,13 +25,16 @@ const Register = (props: Props) => {
                 <div className="form-container">
                     <form>
                         <div className="input-container">
-                            <input type="email" name="email" placeholder="Email" onChange={(e) => setEmail(e.target.value)}/>
+                            <input required={true} type="email" name="email" placeholder="Email" onChange={(e) => setEmail(e.target.value)}/>
                         </div>
                         <div className="input-container">
-                            <input type="password" name="password" placeholder="Password" onChange={(e) => setPassword(e.target.value)}/>
+                            <input required={true} type="text" name="username" placeholder="Username" onChange={(e) => setUsername(e.target.value)}/>
                         </div>
                         <div className="input-container">
-                            <button className="submit-btn">Register</button>
+                            <input required={true} type="password" name="password" placeholder="Password" onChange={(e) => setPassword(e.target.value)}/>
+                        </div>
+                        <div className="input-container">
+                            <button type="button" className="submit-btn" onClick={login}>Register</button>
                         </div>
                     </form>
                 </div>

@@ -9,11 +9,13 @@ import Policies from "./Pages/Policies/Policies";
 import Products from "./Pages/Products/Products";
 import Insurer from "./Pages/Zastrahovateli/Insurer";
 import InsurerDetails from "./Pages/Zastrahovateli/InsurerDetails";
+import ProductsDetails from "./Pages/Products/ProductsDetails";
 
 
 function App() {
   const [currentPage, setCurrentPage] = useState<Page>("Login");
-  const [number, setNumber] = useState<number>(0);
+  const [insCompanyId, setInsCompanyId] = useState<number>(0);
+  const [isLogged, setIsLogged] = useState<boolean>(false);
 
   const handlePageChange = (page: Page | string) => {
     setCurrentPage(page as Page);
@@ -22,7 +24,7 @@ function App() {
   const getContent = () => {
     switch (currentPage) {
       case "Insurer":
-        return<Insurer setCurrentPage={handlePageChange} setNumber={setNumber}/>;
+        return<Insurer setCurrentPage={handlePageChange} setInsCompanyId={setInsCompanyId}/>;
       case "Login":
         return<Login/>;
       case "Register":
@@ -34,7 +36,9 @@ function App() {
       case "Products":
         return<Products/>
       case "InsurerDetails":
-        return<InsurerDetails/>
+        return<InsurerDetails insCompanyId={insCompanyId} setCurrentPage={handlePageChange}/>
+      case "ProductsDetails":
+        return<ProductsDetails insCompanyId={insCompanyId} setCurrentPage={handlePageChange}/>
     }
   };
 
@@ -50,7 +54,8 @@ function App() {
       <div className="App">
         <header className="App-header">
           <NavBar currentPage={currentPage}
-                  setCurrentPage={handlePageChange}/>
+                  setCurrentPage={handlePageChange}
+          isLoggedIn={isLogged}/>
         </header>
         <div className="content">
           {getContent()}

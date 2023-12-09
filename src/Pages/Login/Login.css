@@ -40,10 +40,16 @@ form {
     padding: 10px;
 }
 
-input[type="email"],
-input[type="text"],
-input[type="password"]{
-    width: 280px;
+select {
+    width: 436px;
+    background: transparent;
+    border: 1px solid #0cb6ff;
+    padding: 8px;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+input{
+    width: 420px;
     background: transparent;
     border: none;
     border-bottom: 1px solid #0cb6ff;
@@ -51,17 +57,17 @@ input[type="password"]{
     font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
 }
 
-input[type="email"]::placeholder,
-input[type="text"]::placeholder,
-input[type="password"]::placeholder {
+input::placeholder{
     color: #00004f;
 }
 
-input[type="email"]:focus,
-input[type="text"]:focus,
-input[type="password"]:focus {
+input:focus {
     outline: none;
     border-color: #002cff;
+}
+
+input:disabled{
+    border-bottom-color: #c1c1c1;
 }
 
 .signup-forgot-password{
@@ -84,4 +90,8 @@ input[type="password"]:focus {
     color: #ffffff;
     border: none;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+button:disabled{
+    background-color: #bebebe;
 }
