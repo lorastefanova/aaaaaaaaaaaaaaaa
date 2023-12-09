@@ -175,7 +175,7 @@ const InsurerDetails = (props: Props) => {
                     insCompanyBulstat,
                     insCompanyAddr,
                     insCompanyContact,
-                    insCompanyTel,
+                    insCompanyTel
                 }),
             });
 
@@ -263,12 +263,12 @@ return (
                 <table className="table">
                     <thead className="thead">
                     <tr className="trHead">
-                        <th>insProdCode</th>
-                        <th>insProdName</th>
-                        <th>insProdDeferred</th>
-                        <th>insProdPremPerc</th>
-                        <th>insProdComissPerc</th>
-                        <th>insTypeDto.name</th>
+                        <th>Код на продукт</th>
+                        <th>Наименование</th>
+                        <th>Разсрочено плащане</th>
+                        <th>Застрахователна премия</th>
+                        <th>Комисионна</th>
+                        <th>Тип застраховка</th>
                     </tr>
                     </thead>
                     <tbody className="tbody">
