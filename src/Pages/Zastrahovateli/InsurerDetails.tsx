@@ -88,11 +88,10 @@ const InsurerDetails = (props: Props) => {
     }
 
     const saveProduct = async () => {
-        const data = insuranceTypes.find(e => e.insTypeId === 1);
-
+        const data = insuranceTypes.find(e => e.insTypeId === parseInt( selectedInsuranceType));
         const insTypeDto = {
             insTypeId: data?.insTypeId,
-            insTypeName: selectedInsuranceType,
+            insTypeName: data?.insTypeName,
         };
 
         try {
@@ -107,15 +106,14 @@ const InsurerDetails = (props: Props) => {
                     insProdDeferred,
                     insProdPremPerc,
                     insProdComissPerc,
-                    insTypeDto
+                    insTypeDto,
+                    insCompanyName
                 }),
             });
 
             if (response.ok) {
                 const result = await response.json();
-
             } else {
-
             }
         } catch (error) {
             console.error('Failed to post data');
@@ -165,7 +163,7 @@ const InsurerDetails = (props: Props) => {
     const save = async () => {
         try {
             const response = await fetch('http://localhost:8080/ins-companies', {
-                method: 'POST',
+                method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
                 },

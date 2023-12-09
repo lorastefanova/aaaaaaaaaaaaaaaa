@@ -11,7 +11,8 @@ const Login = (props: Props) => {
     
     const [username, setUsername] = useState<String>("");
     const [password, setPassword] = useState<String>("");
-        const [isDisabled, setIsDisabled] = useState<boolean>(true);
+    const [isDisabled, setIsDisabled] = useState<boolean>(true);
+    const [error, setError] = useState<string | null>();
     
     useEffect(() => {
         if(username && password){
@@ -37,9 +38,8 @@ const Login = (props: Props) => {
           if (response.ok) {
             props.setCurrentPage("Insurer")
             props.setIsLoggedIn(true)
-            console.log('Login successful');
           } else {
-            console.error('Login failed:', response.statusText);
+            setError("Wrong credentials.")
           }
         } catch (error) {
           console.error('Error during login:', error);
@@ -55,6 +55,7 @@ const Login = (props: Props) => {
                 <h4>Enter your details to log in.</h4>
                 <div className="form-container">
                     <form>
+                        {error && <p style={{ color: 'red', margin: 0, fontSize: "12px", textAlign: "left", width: "100%", paddingLeft: "25px" }}>{error}</p>}
                         <div className="input-container">
                             <input type="username" required={true} name="username" placeholder="Username" onChange={(e) => setUsername(e.target.value)}/>
                         </div>
