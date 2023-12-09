@@ -10,12 +10,15 @@ import Products from "./Pages/Products/Products";
 import Insurer from "./Pages/Zastrahovateli/Insurer";
 import InsurerDetails from "./Pages/Zastrahovateli/InsurerDetails";
 import ProductsDetails from "./Pages/Products/ProductsDetails";
+import Objects from './Pages/Objects/Objects';
+import ObjectDetails from './Pages/Objects/ObjectDetails';
 
 
 function App() {
   const [currentPage, setCurrentPage] = useState<Page>("Login");
   const [insCompanyId, setInsCompanyId] = useState<number>(0);
   const [isLogged, setIsLogged] = useState<boolean>(false);
+  const [insObjectTypeId, setInsObjectTypeId] = useState<number>(0);
 
   const handlePageChange = (page: Page | string) => {
     setCurrentPage(page as Page);
@@ -37,8 +40,10 @@ function App() {
         return<Products/>
       case "InsurerDetails":
         return<InsurerDetails insCompanyId={insCompanyId} setCurrentPage={handlePageChange}/>
-      case "ProductsDetails":
-        return<ProductsDetails insCompanyId={insCompanyId} setCurrentPage={handlePageChange}/>
+      case "Objects":
+        return<Objects setCurrentPage={handlePageChange} setInsObjectTypeId={setInsObjectTypeId}/>
+      case "ObjectDetails":
+        return<ObjectDetails insObjectTypeId={insObjectTypeId} setCurrentPage={handlePageChange} />
     }
   };
 
