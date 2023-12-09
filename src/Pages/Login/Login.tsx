@@ -30,11 +30,6 @@ const Login = (props: Props) => {
                         </div>
                     </form>
                 </div>
-                <div className="signup-forgot-password">
-                    <button className="invis-btn">
-                        Don't have an account? Click here to register.
-                    </button>
-                </div>
             </div>
         </div>
     );
