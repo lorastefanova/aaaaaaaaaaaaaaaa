@@ -81,11 +81,11 @@ const ObjectDetails = (props: Props) => {
                 if (response.ok) {
                     props.setCurrentPage("Objects")
                 } else {
-                    console.error('Error deleting insurance company');
+                    console.error('Error deleting object');
                 }
             })
             .catch(error => {
-                console.error('Error deleting insurance company', error);
+                console.error('Error deleting object', error);
             });
     }
 

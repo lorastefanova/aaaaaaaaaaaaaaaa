@@ -36,6 +36,33 @@ interface DataRowType {
     maturityCount:number
 }
 
+interface InsObjectTypeDto {
+    insObjectTypeId: number;
+    insObjectTypeName: string;
+  }
+
+
+interface InsProductDto {
+    insProdCode: number;
+    insProdName: string;
+    insTypeDto: any;
+    insProdDeferred: string;
+    insProdPremPerc: number;
+    insProdComissPerc: number;
+    insCompanyName: string;
+}
+
+interface ClientDto {
+    clientId: number;
+    clientType: string;
+    clientEgnBulstat: string;
+    clientFullname: string;
+    email: string;
+    telephone: string;
+    adressText: string;
+    clientNote: string;
+}
+
 const ProductsDetails = (props: Props) => {
     const [policyNo, setPolicyNo] = useState<string>("");
     const [policyDate, setPolicyDate] = useState<Date>();
@@ -50,9 +77,9 @@ const ProductsDetails = (props: Props) => {
     const [policyNote, setPolicyNote] = useState<string>("");
     const [maturityCount, setMaturityCount] = useState<number>();
 
-    const [insObjectTypeDto, setInsObjectTypeDto] = useState<string>("");
-    const [insProductDto, setInsProductDto] = useState<string>("");
-    const [clientDto, setClientDto] = useState<string>("");
+    const [insObjectTypeDto, setInsObjectTypeDto] = useState<InsObjectTypeDto>();
+    const [insProductDto, setInsProductDto] = useState<InsProductDto>();
+    const [clientDto, setClientDto] = useState<ClientDto>();
 
     const [insProdName, setInsProdName] = useState<string>("");
     const [insProdDeferred, setInsProdDeferred] = useState<string>("");
@@ -70,6 +97,18 @@ const ProductsDetails = (props: Props) => {
     const [isDisableButton, setIsDisabledButton] = useState<boolean>(true);
     const [isDisabled, setIsDisabled] = useState<boolean>(true);
 
+    const [change, setChange] = useState<number>(0);
+
+    const [objectTypes, setObjectTypes] = useState<InsObjectTypeDto[]>([]);
+    const [selectedObjectType, setSelectedObjectType] = useState<string>('');
+
+    const [products, setProducts] = useState<InsProductDto[]>([]);
+    const [selectedProduct, setSelectedProduct] = useState<string>('');
+
+    const [clients, setClients] = useState<ClientDto[]>([]);
+    const [selectedClient, setSelectedClient] = useState<string>('');
+
+
     useEffect(() => {
         fetch('http://localhost:8080/nomenclature/ins-types')
             .then(response => response.json())
@@ -80,7 +119,34 @@ const ProductsDetails = (props: Props) => {
             .then(response => response.json())
             .then(data => setAllCompanies(data))
             .catch(error => console.error('Error fetching data:', error));
+
+        fetch('http://localhost:8080/ins-object-types')
+            .then(response => response.json())
+            .then(data => setObjectTypes(data))
+            .catch(error => console.error('Error fetching data:', error));
+
+        fetch('http://localhost:8080/ins-products')
+            .then(response => response.json())
+            .then(data => setProducts(data))
+            .catch(error => console.error('Error fetching data:', error));
+
+        fetch('http://localhost:8080/clients')
+            .then(response => response.json())
+            .then(data => setClients(data))
+            .catch(error => console.error('Error fetching data:', error));
     }, []);
+
+    useEffect(() => {
+        if(policyNo && policyDate && policyBeginDate && policyEndDate && objectDescription && objectDescription &&
+            policyActive && policySum && policyPremia && policyTax && policyInsComiss && policyNote && maturityCount && 
+            selectedClient && selectedProduct && selectedObjectType){
+            setIsDisabledButton(false)
+        } else {
+            setIsDisabledButton(true)
+        }
+    },[policyNo, policyDate, policyBeginDate, policyEndDate, objectDescription, objectDescription,
+        policyActive, policySum, policyPremia, policyTax, policyInsComiss, policyNote, maturityCount, selectedClient, selectedProduct, selectedObjectType])
+
 
     const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value;
@@ -194,9 +260,42 @@ const ProductsDetails = (props: Props) => {
         // setErrorName(null);
     };
 
-    const save = () => {
+    const save = async () => {
+        const data = insuranceTypes.find(e => e.insTypeId === parseInt(selectedInsuranceType));
 
-    };
+        const insTypeDto = {
+            insTypeId: data?.insTypeId,
+            insTypeName: data?.insTypeName,
+        };
+
+        try {
+            const response = await fetch('http://localhost:8080/ins-products', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    insProdCode: props.insProductId,
+                    insProdName, 
+                    insProdDeferred,
+                    insTypeDto: selectedInsuranceType,
+                    insProdComissPerc,
+                    insProdPremPerc,
+                    insCompanyName: selectedCompany
+                }),
+            });
+
+            if (response.ok) {
+                console.log('Data updated successfully');
+                setIsDisabled(true);
+                // setErrorName(null)
+            } else {
+                // setErrorName('Company name must be unique.');
+            }
+        } catch (error) {
+            console.error('Error posting data:', error);
+        }
+    }
 
     const close = () => {
         setShowPopup(false)
@@ -212,6 +311,9 @@ const ProductsDetails = (props: Props) => {
         setPolicyInsComiss(undefined)
         setPolicyNote("")
         setMaturityCount(undefined)
+        setSelectedClient("")
+        setSelectedProduct("")
+        setSelectedObjectType("")
     };
 
     const del = () => {
@@ -226,9 +328,47 @@ const ProductsDetails = (props: Props) => {
         setShowPopup(true);
     };
 
-    const savePolicy = () => {
+    const savePolicy = async () => {
+        const client = clients.find(e => e.clientId === parseInt( selectedClient));
+        const product = products.find(e => e.insProdCode === parseInt(selectedProduct));
+        const objectType = objectTypes.find(e => e.insObjectTypeId === parseInt(selectedObjectType));
 
-    };
+        try {
+            const response = await fetch('http://localhost:8080/policies', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    policyNo,
+                    policyDate,
+                    policyBeginDate,
+                    policyEndDate,
+                    objectDescription,
+                    policyActive,
+                    policySum,
+                    policyPremia,
+                    policyTax,
+                    policyInsComiss,
+                    policyNote,
+                    maturityCount,
+                    clientDto: client,
+                    insProductDto: product,
+                    insObjectTypeDto: objectType
+                }),
+            });
+
+            if (response.ok) {
+                const result = await response.json();
+                setChange(change + 1)
+                close()
+            } else {
+
+            }
+        } catch (error) {
+            console.error('Failed to post data');
+        }
+    }
 
     // useEffect(() => {
     //     fetch(`http://localhost:8080/ins-products/ins-company?insCompanyId=${props.insProductId}`, )
@@ -253,6 +393,7 @@ const ProductsDetails = (props: Props) => {
                     setInsProdPermPerc(result.insProdPremPerc);
                     setInsProdComissPerc(result.insProdComissPerc);
                     setSelectedCompany(result.insCompanyName);
+                    setSelectedInsuranceType(result.insTypeDto);
                 } else {
                     console.error(`Error: ${response.status}`);
                 }
@@ -268,6 +409,18 @@ const ProductsDetails = (props: Props) => {
         props.setPolicyId(num);
         props.setCurrentPage("PolicyDetails"); // nqma go
     }
+
+    useEffect(() => {
+        fetch(`http://localhost:8080/policies/ins-product?insProductId=${props.insProductId}`, )
+            .then(response => response.json())
+            .then(data => {
+                console.log(data)
+                setAllData(data)
+            })
+            .catch(error => {
+                console.error('Error fetching data:', error);
+            });
+    },[change])
 
     return (
         <div className="container">
@@ -339,12 +492,18 @@ const ProductsDetails = (props: Props) => {
                     <table className="table">
                         <thead className="thead">
                         <tr className="trHead">
-                            <th>Код на продукт</th>
-                            <th>Наименование</th>
-                            <th>Разсрочено плащане</th>
-                            <th>Застрахователна премия</th>
+                            <th>Номер на полица</th>
+                            <th>Дата на сключване</th>
+                            <th>Начална дата</th>
+                            <th>Крайна дата</th>
+                            <th>Описание</th>
+                            <th>Активна</th>
+                            <th>Сума на полица</th>
+                            <th>Премия</th>
+                            <th>Такса</th>
                             <th>Комисионна</th>
-                            <th>Тип застраховка</th>
+                            <th>Бележка</th>
+                            <th>??????</th>
                         </tr>
                         </thead>
                         <tbody className="tbody">
@@ -381,40 +540,82 @@ const ProductsDetails = (props: Props) => {
                     <div className="popup-inner">
                         <form>
                             <div className="input-container">
-                                <input value={policyNo} type="text" name="policyNo" placeholder="policyNo" onChange={hanglePolicyNoChange}/>
+                                <input value={policyNo} type="text" name="policyNo" placeholder="Номер на полица" onChange={hanglePolicyNoChange}/>
                             </div>
                             <div className="input-container">
-                                <input type="date" name="policyDate" placeholder="policyDate" onChange={handlePolicyDateChange}/>
+                                <input type="date" name="policyDate" placeholder="Дата на сключване" onChange={handlePolicyDateChange}/>
                             </div>
                             <div className="input-container">
-                                <input type="date" name="policyBeginDate" placeholder="policyBeginDate" onChange={handlepolicyBeginDate}/>
+                                <input type="date" name="policyBeginDate" placeholder="Начална дата" onChange={handlepolicyBeginDate}/>
                             </div>
                             <div className="input-container">
-                                <input type="date" name="policyEndDate" placeholder="policyEndDate" onChange={handlepolicyEndDate}/>
+                                <input type="date" name="policyEndDate" placeholder="Крайна дата" onChange={handlepolicyEndDate}/>
                             </div>
                             <div className="input-container">
-                                <input value={objectDescription} type="text" name="objectDescription" placeholder="objectDescription" onChange={handleDescription}/>
+                                <input value={objectDescription} type="text" name="objectDescription" placeholder="Описание" onChange={handleDescription}/>
                             </div>
                             <div className="input-container">
-                                <input value={policyActive} type="text" name="policyActive" placeholder="policyActive" onChange={handlePolicyActive}/>
+                                <input value={policyActive} type="text" name="policyActive" placeholder="Активна" onChange={handlePolicyActive}/>
                             </div>
                             <div className="input-container">
-                                <input value={policySum} type="number" name="policySum" placeholder="policySum" onChange={handlePolicySum}/>
+                                <input value={policySum} type="number" name="policySum" placeholder="Сума на полица" onChange={handlePolicySum}/>
                             </div>
                             <div className="input-container">
-                                <input value={policyPremia} type="number" name="policyPremia" placeholder="policyPremia" onChange={handlePolicyPremia}/>
+                                <input value={policyPremia} type="number" name="policyPremia" placeholder="Премия" onChange={handlePolicyPremia}/>
                             </div>
                             <div className="input-container">
-                                <input value={policyTax} type="number" name="policyTax" placeholder="policyTax" onChange={handlePolicyTax}/>
+                                <input value={policyTax} type="number" name="policyTax" placeholder="Такса" onChange={handlePolicyTax}/>
                             </div>
                             <div className="input-container">
-                                <input value={policyInsComiss} type="number" name="policyInsComiss" placeholder="policyInsComiss" onChange={handlePolicyInsComiss}/>
+                                <input value={policyInsComiss} type="number" name="policyInsComiss" placeholder="Комисионна" onChange={handlePolicyInsComiss}/>
                             </div>
                             <div className="input-container">
-                                <input value={policyNote} type="text" name="policyNote" placeholder="policyNote" onChange={handlePolicyNote}/>
+                                <input value={policyNote} type="text" name="policyNote" placeholder="Бележка" onChange={handlePolicyNote}/>
                             </div>
                             <div className="input-container">
-                                <input value={maturityCount} type="number" name="maturityCount" placeholder="maturityCount" onChange={handleMaturityCount}/>
+                                <input value={maturityCount} type="number" name="maturityCount" placeholder="??????" onChange={handleMaturityCount}/>
+                            </div>
+                            <div className="input-container">
+                                <select
+                                    name="objectType"
+                                    value={selectedObjectType}
+                                    onChange={(e) => setSelectedObjectType(e.target.value)}
+                                >
+                                    <option value="" disabled>Тип обект</option>
+                                    {objectTypes.map((type) => (
+                                        <option key={type.insObjectTypeId} value={type.insObjectTypeId}>
+                                            {type.insObjectTypeName}
+                                        </option>
+                                    ))}
+                                </select>
+                            </div>
+                            <div className="input-container">
+                                <select
+                                    name="product"
+                                    value={selectedProduct}
+                                    onChange={(e) => setSelectedProduct(e.target.value)}
+                                >
+                                    <option value="" disabled>Продукт</option>
+                                    {products.map((type) => (
+                                        <option key={type.insProdCode} value={type.insProdCode}>
+                                            {type.insProdName}
+                                        </option>
+                                    ))}
+                                </select>
+                            </div>
+                            <div className="input-container">
+                                <select
+                                    name="product"
+                                    value={selectedClient}
+                                    onChange={(e) => setSelectedClient(e.target.value)}
+                                >
+                                    <option value="" disabled>Клиент</option>
+                                    {clients.map((type) => (
+                                        <option key={type.clientId} value={type.clientId}>
+                                            {type.clientFullname}
+                                        </option>
+                                    ))}
+                                </select>
                             </div>
 
                             <div className="btn-container">

@@ -175,6 +175,7 @@ const InsurerDetails = (props: Props) => {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
+                    insCompanyId: props.insCompanyId,
                     insCompanyName,
                     insCompanyBulstat,
                     insCompanyAddr,
