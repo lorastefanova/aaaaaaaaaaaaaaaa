@@ -207,7 +207,6 @@ const Insurer = (props: Props) => {
                             <th>Адрес</th>
                             <th>Контакт</th>
                             <th>Телефон</th>
-                            <th>Тип застраховка</th>
                         </tr>
                         </thead>
                         <tbody className="tbody">
@@ -223,7 +222,6 @@ const Insurer = (props: Props) => {
                                 <td>{row.insCompanyAddr}</td>
                                 <td>{row.insCompanyContact}</td>
                                 <td>{row.insCompanyTel}</td>
-                                <td>НЕ СЕ ВРЪЩА ОТ БЕКЕНДА</td>
                             </tr>
                         ))}
                         </tbody>

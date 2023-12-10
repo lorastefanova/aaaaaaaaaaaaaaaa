@@ -280,7 +280,7 @@ const ProductsDetails = (props: Props) => {
                     insProdCode: props.insProductId,
                     insProdName, 
                     insProdDeferred,
-                    insTypeDto: selectedInsuranceType,
+                    insTypeDto: insTypeDto,
                     insProdComissPerc,
                     insProdPremPerc,
                     insCompanyName: selectedCompany
