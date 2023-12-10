@@ -108,6 +108,8 @@ const ProductsDetails = (props: Props) => {
     const [clients, setClients] = useState<ClientDto[]>([]);
     const [selectedClient, setSelectedClient] = useState<string>('');
 
+    const [errorName, setErrorName] = useState<string | null>(null);
+
 
     useEffect(() => {
         fetch('http://localhost:8080/nomenclature/ins-types')
@@ -152,7 +154,7 @@ const ProductsDetails = (props: Props) => {
         const value = e.target.value;
         setInsProdName(value);
 
-        // setErrorName(null);
+        setErrorName(null);
     };
 
     const handleDefChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -286,11 +288,10 @@ const ProductsDetails = (props: Props) => {
             });
 
             if (response.ok) {
-                console.log('Data updated successfully');
                 setIsDisabled(true);
-                // setErrorName(null)
+                setErrorName(null)
             } else {
-                // setErrorName('Company name must be unique.');
+                setErrorName('Product name must be unique.');
             }
         } catch (error) {
             console.error('Error posting data:', error);
@@ -447,6 +448,7 @@ const ProductsDetails = (props: Props) => {
                     <div className="input-container">
                         <input value={insProdName} type="text" name="insProdName" placeholder="Наименование" onChange={handleNameChange} disabled={isDisabled}/>
                     </div>
+                    {errorName && <p style={{ color: 'red', margin: 0, fontSize: "12px", textAlign: "left", width: "100%", paddingLeft: "45px" }}>{errorName}</p>}
                     <div className="input-container">
                         <input value={insProdDeferred} type="text" name="insProdDeferred" placeholder="Разсрочено плащане" onChange={handleDefChange} disabled={isDisabled}/>
                     </div>
