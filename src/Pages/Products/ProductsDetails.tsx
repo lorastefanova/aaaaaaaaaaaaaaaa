@@ -317,8 +317,23 @@ const ProductsDetails = (props: Props) => {
     };
 
     const del = () => {
-
-    };
+        fetch(`http://localhost:8080/ins-products/${props.insProductId}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        })
+            .then(response => {
+                if (response.ok) {
+                    props.setCurrentPage("Products")
+                } else {
+                    console.error('Error deleting insurance company');
+                }
+            })
+            .catch(error => {
+                console.error('Error deleting insurance company', error);
+            });
+    }
 
     const edit = () => {
         setIsDisabled(false);

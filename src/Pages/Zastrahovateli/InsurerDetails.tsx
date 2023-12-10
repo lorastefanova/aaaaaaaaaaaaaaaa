@@ -157,7 +157,7 @@ const InsurerDetails = (props: Props) => {
         })
             .then(response => {
                 if (response.ok) {
-                    props.setCurrentPage("Insurer") //ne ti bachka deleta
+                    props.setCurrentPage("Insurer")
                 } else {
                     console.error('Error deleting insurance company');
                 }
