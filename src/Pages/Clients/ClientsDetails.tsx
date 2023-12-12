@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 
 type Props = {
-    insProductId: number;
+    clientId: number;
     setPolicyId: (num: number) => void;
     setCurrentPage: (page: string) => void;
 };
@@ -41,7 +41,6 @@ interface InsObjectTypeDto {
     insObjectTypeName: string;
   }
 
-
 interface InsProductDto {
     insProdCode: number;
     insProdName: string;
@@ -63,7 +62,7 @@ interface ClientDto {
     clientNote: string;
 }
 
-const ProductsDetails = (props: Props) => {
+const ClientsDetails = (props: Props) => {
     const [policyNo, setPolicyNo] = useState<string>("");
     const [policyDate, setPolicyDate] = useState<Date>();
     const [policyBeginDate, setPolicyBeginDate] = useState<Date>();
@@ -81,10 +80,12 @@ const ProductsDetails = (props: Props) => {
     const [insProductDto, setInsProductDto] = useState<InsProductDto>();
     const [clientDto, setClientDto] = useState<ClientDto>();
 
-    const [insProdName, setInsProdName] = useState<string>("");
-    const [insProdDeferred, setInsProdDeferred] = useState<string>("");
-    const [insProdPremPerc, setInsProdPermPerc] = useState<string>("");
-    const [insProdComissPerc, setInsProdComissPerc] = useState<string>("");
+    const [clientType, setClientType] = useState<string>("");
+    const [clientEgnBulstat, setClientEgnBulstat] = useState<string>("");
+    const [clientFullname, setClientFullname] = useState<string>('');
+    const [email, setEmail] = useState<string>('');
+    const [telephone, setTelephone] = useState<string>('');
+    const [adressText, setAdressText] = useState<string>('');
 
     const [selectedInsuranceType, setSelectedInsuranceType] = useState<string>('');
     const [selectedCompany, setSelectedCompany] = useState<string>('');
@@ -102,11 +103,11 @@ const ProductsDetails = (props: Props) => {
     const [objectTypes, setObjectTypes] = useState<InsObjectTypeDto[]>([]);
     const [selectedObjectType, setSelectedObjectType] = useState<string>('');
 
-    const [products, setProducts] = useState<InsProductDto>();
-    //const [selectedProduct, setSelectedProduct] = useState<string>('');
+    const [products, setProducts] = useState<InsProductDto[]>([]);
+    const [selectedProduct, setSelectedProduct] = useState<string>('');
 
-    const [clients, setClients] = useState<ClientDto[]>([]);
-    const [selectedClient, setSelectedClient] = useState<string>('');
+    const [clients, setClients] = useState<ClientDto>();
+  //  const [selectedClient, setSelectedClient] = useState<string>('');
 
     const [errorName, setErrorName] = useState<string | null>(null);
 
@@ -127,49 +128,79 @@ const ProductsDetails = (props: Props) => {
             .then(data => setObjectTypes(data))
             .catch(error => console.error('Error fetching data:', error));
 
-        // fetch('http://localhost:8080/ins-products')
-        //     .then(response => response.json())
-        //     .then(data => setProducts(data))
-        //     .catch(error => console.error('Error fetching data:', error));
-
-        fetch('http://localhost:8080/clients')
+        fetch('http://localhost:8080/ins-products')
             .then(response => response.json())
-            .then(data => setClients(data))
+            .then(data => setProducts(data))
             .catch(error => console.error('Error fetching data:', error));
+
+        // fetch('http://localhost:8080/clients')
+        //     .then(response => response.json())
+        //     .then(data => setClients(data))
+        //     .catch(error => console.error('Error fetching data:', error));
     }, []);
 
     useEffect(() => {
         if(policyNo && policyDate && policyBeginDate && policyEndDate && objectDescription && objectDescription &&
             policyActive && policySum && policyPremia && policyTax && policyInsComiss && policyNote && maturityCount && 
-            selectedClient && products && selectedObjectType){
+            selectedProduct && clients && selectedObjectType){
             setIsDisabledButton(false)
         } else {
             setIsDisabledButton(true)
         }
     },[policyNo, policyDate, policyBeginDate, policyEndDate, objectDescription, objectDescription,
-        policyActive, policySum, policyPremia, policyTax, policyInsComiss, policyNote, maturityCount, selectedClient, products, selectedObjectType])
+        policyActive, policySum, policyPremia, policyTax, policyInsComiss, policyNote, maturityCount, selectedProduct, clients, selectedObjectType])
 
-
-    const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const value = e.target.value;
-        setInsProdName(value);
-
-        setErrorName(null);
-    };
-
-    const handleDefChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const value = e.target.value;
-        setInsProdDeferred(value);
-
-        // setErrorName(null);
-    };
-
-    const handlePermPercChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const value = e.target.value;
-        setInsProdPermPerc(value);
-
-        // setErrorName(null);
-    };
+        const handleClientType = (e: React.ChangeEvent<HTMLInputElement>) => {
+            const value = e.target.value;
+            if (value && value == "Физическо лице") {
+                setClientType("INDIVIDUAL");
+            } else if (value && value == "Юридическо лице") {
+                setClientType("CORPORATE");
+            }
+            // setErrorName(null);
+        };
+        const handleClientEgnBulstat = (e: React.ChangeEvent<HTMLInputElement>) => {
+            const value = e.target.value;
+            setClientEgnBulstat(value);
+            // setErrorName(null);
+        };
+        const handleClientFullname = (e: React.ChangeEvent<HTMLInputElement>) => {
+            const value = e.target.value;
+            setClientFullname(value);
+    
+            // setErrorName(null);
+        };
+    
+        const handleEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
+            const value = e.target.value;
+            setEmail(value);
+    
+            // if (value.length !== 9 && value.length !== 13) {
+            //     setError('Bulstat must be either 9 or 13 symbols.');
+            // } else {
+            //     setError(null);
+            // }
+        };
+        const handleTelephone = (e: React.ChangeEvent<HTMLInputElement>) => {
+            const value = e.target.value;
+            setTelephone(value);
+    
+            // if (value.length !== 9 && value.length !== 13) {
+            //     setError('Bulstat must be either 9 or 13 symbols.');
+            // } else {
+            //     setError(null);
+            // }
+        };
+        const handleAdressText = (e: React.ChangeEvent<HTMLInputElement>) => {
+            const value = e.target.value;
+            setAdressText(value);
+    
+            // if (value.length !== 9 && value.length !== 13) {
+            //     setError('Bulstat must be either 9 or 13 symbols.');
+            // } else {
+            //     setError(null);
+            // }
+        };
 
     const hanglePolicyNoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value;
@@ -255,35 +286,22 @@ const ProductsDetails = (props: Props) => {
         // setErrorName(null);
     };
 
-    const handleComissPercChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const value = e.target.value;
-        setInsProdComissPerc(value);
-
-        // setErrorName(null);
-    };
-
     const save = async () => {
-        const data = insuranceTypes.find(e => e.insTypeId === parseInt(selectedInsuranceType));
-
-        const insTypeDto = {
-            insTypeId: data?.insTypeId,
-            insTypeName: data?.insTypeName,
-        };
 
         try {
-            const response = await fetch('http://localhost:8080/ins-products', {
+            const response = await fetch('http://localhost:8080/clients', {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    insProdCode: props.insProductId,
-                    insProdName, 
-                    insProdDeferred,
-                    insTypeDto: insTypeDto,
-                    insProdComissPerc,
-                    insProdPremPerc,
-                    insCompanyName: selectedCompany
+                    clientId: props.clientId,
+                    clientType,
+                    clientEgnBulstat,
+                    clientFullname,
+                    email,
+                    telephone,
+                    adressText,
                 }),
             });
 
@@ -312,29 +330,10 @@ const ProductsDetails = (props: Props) => {
         setPolicyInsComiss(undefined)
         setPolicyNote("")
         setMaturityCount(undefined)
-        setSelectedClient("")
-      //  setSelectedProduct("")
+        //setSelectedClient("")
+        setSelectedProduct("")
         setSelectedObjectType("")
     };
-
-    const del = () => {
-        fetch(`http://localhost:8080/ins-products/${props.insProductId}`, {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        })
-            .then(response => {
-                if (response.ok) {
-                    props.setCurrentPage("Products")
-                } else {
-                    console.error('Error deleting insurance company');
-                }
-            })
-            .catch(error => {
-                console.error('Error deleting insurance company', error);
-            });
-    }
 
     const edit = () => {
         setIsDisabled(false);
@@ -345,8 +344,8 @@ const ProductsDetails = (props: Props) => {
     };
 
     const savePolicy = async () => {
-        const client = clients.find(e => e.clientId === parseInt( selectedClient));
-      //  const product = products.find(e => e.insProdCode === parseInt(products));
+     //   const client = clients.find(e => e.clientId === parseInt( selectedClient));
+        const product = products.find(e => e.insProdCode === parseInt(selectedProduct));
         const objectType = objectTypes.find(e => e.insObjectTypeId === parseInt(selectedObjectType));
 
         try {
@@ -368,8 +367,8 @@ const ProductsDetails = (props: Props) => {
                     policyInsComiss,
                     policyNote,
                     maturityCount,
-                    clientDto: client,
-                    insProductDto: products,
+                    clientDto: clients,
+                    insProductDto: product,
                     insObjectTypeDto: objectType
                 }),
             });
@@ -396,21 +395,28 @@ const ProductsDetails = (props: Props) => {
     //             console.error('Error fetching data:', error);
     //         });
     // },[change])
-
+    const showClientType = (clientType: string) => {
+        if (clientType && clientType == "INDIVIDUAL") {
+            clientType = "Физическо лице";
+        } else if (clientType && clientType == "CORPORATE") {
+            clientType = "Юридическо лице";
+        }
+        return clientType;
+    }
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await fetch(`http://localhost:8080/ins-products/${props.insProductId}`);
+                const response = await fetch(`http://localhost:8080/clients/${props.clientId}`);
 
                 if (response.ok) {
                     const result = await response.json();
-                    setInsProdName(result.insProdName);
-                    setInsProdDeferred(result.insProdDeferred);
-                    setInsProdPermPerc(result.insProdPremPerc);
-                    setInsProdComissPerc(result.insProdComissPerc);
-                    setSelectedCompany(result.insCompanyName);
-                    setSelectedInsuranceType(result.insTypeDto);
-                    setProducts(result)
+                    setClientType(showClientType(result.clientType));
+                    setClientEgnBulstat(result.clientEgnBulstat);
+                    setClientFullname(result.clientFullname);
+                    setEmail(result.email);
+                    setTelephone(result.telephone);
+                    setAdressText(result.adressText);
+                    setClients(result);
                 } else {
                     console.error(`Error: ${response.status}`);
                 }
@@ -432,7 +438,7 @@ const ProductsDetails = (props: Props) => {
     }
 
     useEffect(() => {
-        fetch(`http://localhost:8080/policies/ins-product?insProductId=${props.insProductId}`, )
+        fetch(`http://localhost:8080/policies/client?clientId=${props.clientId}`, )
             .then(response => response.json())
             .then(data => {
                 console.log(data)
@@ -446,53 +452,29 @@ const ProductsDetails = (props: Props) => {
     return (
         <div className="container">
             <div className="left-form-container">
-                <form>
-                    <div className="input-container">
-                        <input value={props.insProductId} type="text" name="insProductId" placeholder="Код на продукт" disabled={true}/>
+            <form>
+                <div className="input-container">
+                        <input value={props.clientId} type="text" name="clientId" placeholder="Номер на клиент" disabled={true}/>
                     </div>
-                    <div className="input-container">
-                        <input value={insProdName} type="text" name="insProdName" placeholder="Наименование" onChange={handleNameChange} disabled={isDisabled}/>
-                    </div>
-                    {errorName && <p style={{ color: 'red', margin: 0, fontSize: "12px", textAlign: "left", width: "100%", paddingLeft: "45px" }}>{errorName}</p>}
-                    <div className="input-container">
-                        <input value={insProdDeferred} type="text" name="insProdDeferred" placeholder="Разсрочено плащане" onChange={handleDefChange} disabled={isDisabled}/>
-                    </div>
-                    <div className="input-container">
-                        <input value={insProdPremPerc} type="text" name="insProdPremPerc" placeholder="Застрахователна премия" onChange={handlePermPercChange} disabled={isDisabled}/>
-                    </div>
-                    <div className="input-container">
-                        <input value={insProdComissPerc} type="text" name="insProdComissPerc" placeholder="Комисионна" onChange={handleComissPercChange} disabled={isDisabled}/>
-                    </div>
-                    <div className="input-container">
-                        <select
-                            name="insuranceType"
-                            value={selectedInsuranceType}
-                            disabled={isDisabled}
-                            onChange={(e) => setSelectedInsuranceType(e.target.value)}
-                        >
-                            <option value="" disabled>Тип застраховка</option>
-                            {insuranceTypes.map((type) => (
-                                <option key={type.insTypeId} value={type.insTypeId}>
-                                    {type.insTypeName}
-                                </option>
-                            ))}
-                        </select>
-                    </div>
-                    <div className="input-container">
-                        <select
-                            name="insuranceType"
-                            value={selectedCompany}
-                            disabled={isDisabled}
-                            onChange={(e) => setSelectedCompany(e.target.value)}
-                        >
-                            <option value="" disabled>Компания</option>
-                            {allCompanies.map((type) => (
-                                <option key={type.insCompanyName} value={type.insCompanyName}>
-                                    {type.insCompanyName}
-                                </option>
-                            ))}
-                        </select>
-                    </div>
+                            <div className="input-container">
+                                <input value={clientType} type="text" name="clientType" placeholder="Тип на клиента" onChange={handleClientType} disabled={isDisabled}/>
+                            </div>
+                            <div className="input-container">
+                                <input value={clientEgnBulstat} type="text" name="clientEgnBulstat" placeholder="Егн или булстат" onChange={handleClientEgnBulstat} disabled={isDisabled}/>
+                            </div>
+                            <div className="input-container">
+                                <input value={clientFullname} type="text" name="clientFullname" placeholder="Име" onChange={handleClientFullname} disabled={isDisabled}/>
+                            </div>
+                            <div className="input-container">
+                                <input value={email} type="text" name="email" placeholder="Имейл" onChange={handleEmail} disabled={isDisabled}/>
+                            </div>
+                            <div className="input-container">
+                                <input value={telephone} type="text" name="telephone" placeholder="Телефон" onChange={handleTelephone} disabled={isDisabled}/>
+                            </div>
+                            <div className="input-container">
+                                <input value={adressText} type="text" name="adressText" placeholder="Адрес" onChange={handleAdressText} disabled={isDisabled}/>
+                            </div>
+                        </form>
                     <div className="btn-container">
                         <div className="input-container">
                             <button type="button" className="submit-btn" onClick={save} >Запази</button>
@@ -501,13 +483,9 @@ const ProductsDetails = (props: Props) => {
                             <button type="button" className="submit-btn" onClick={edit}>Редактирай</button>
                         </div>
                         <div className="input-container">
-                            <button type="button" className="submit-btn" onClick={del}>Изтрий</button>
-                        </div>
-                        <div className="input-container">
                             <button type="button" className="submit-btn" onClick={addPolicy}>Нова полица</button>
                         </div>
                     </div>
-                </form>
             </div>
             <div className="table">
                 {allData ? (
@@ -525,7 +503,7 @@ const ProductsDetails = (props: Props) => {
                             <th>Такса</th>
                             <th>Комисионна</th>
                             <th>Бележка</th>
-                            <th>??????</th>
+                            <th>Брой вноски</th>
                         </tr>
                         </thead>
                         <tbody className="tbody">
@@ -612,18 +590,18 @@ const ProductsDetails = (props: Props) => {
                                 </select>
                             </div>
                             <div className="input-container">
-                                <input value={products?.insProdName} type="text" name="products" placeholder="P" disabled={true} />
+                                <input value={clients?.clientFullname} type="text" name="clients" placeholder="P" disabled={true} />
                             </div>
                             <div className="input-container">
                                 <select
-                                    name="client"
-                                    value={selectedClient}
-                                    onChange={(e) => setSelectedClient(e.target.value)}
+                                    name="product"
+                                    value={selectedProduct}
+                                    onChange={(e) => setSelectedProduct(e.target.value)}
                                 >
-                                    <option value="" disabled>Клиент</option>
-                                    {clients.map((type) => (
-                                        <option key={type.clientId} value={type.clientId}>
-                                            {type.clientFullname}
+                                    <option value="" disabled>Продукт</option>
+                                    {products.map((type) => (
+                                        <option key={type.insProdCode} value={type.insProdCode}>
+                                            {type.insProdName}
                                         </option>
                                     ))}
                                 </select>
@@ -645,4 +623,4 @@ const ProductsDetails = (props: Props) => {
     );
 }
 
-export default ProductsDetails;
+export default ClientsDetails;

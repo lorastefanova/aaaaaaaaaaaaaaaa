@@ -50,6 +50,8 @@ const Products = (props: Props) => {
     const [selectedInsuranceTypeNew, setSelectedInsuranceTypeNew] = useState<string>('');
     // const [companiesNew, setCompaniesNew] = useState<Companies[]>([]);
     const [selectedCompanyNew, setSelectedCompanyNew] = useState<string>('');
+    const [insProdPremPercNew, setInsProdPremPercNew] = useState<number>();
+    const [insProdComissPercNew, setInsProdComissPercNew] = useState<number>();
 
     //other
     const [insuranceTypes, setInsuranceTypes] = useState<InsuranceType[]>([]);
@@ -105,7 +107,9 @@ const Products = (props: Props) => {
                     insProdName: insProdNameNew,
                     insProdDeferred: insProdDeferredNew,
                     insTypeDto,
-                    insCompanyName: selectedCompanyNew
+                    insCompanyName: selectedCompanyNew,
+                    insProdComissPerc: insProdComissPercNew,
+                    insProdPremPerc: insProdPremPercNew
                 }),
             });
 
@@ -125,6 +129,18 @@ const Products = (props: Props) => {
     const handleInsProdDefChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value;
         setInsProdDeferredNew(value);
+
+        // setErrorName(null);
+    };
+    const handleInsProdPremPerc = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const value = e.target.value;
+        setInsProdPremPercNew(parseFloat(value));
+
+        // setErrorName(null);
+    };
+    const handleInsProdComissPerc = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const value = e.target.value;
+        setInsProdComissPercNew(parseFloat(value));
 
         // setErrorName(null);
     };
@@ -301,6 +317,12 @@ const Products = (props: Props) => {
                             </div>
                             <div className="input-container">
                                 <input type="text" name="insProdDeferred" placeholder="Разсрочено плащане" onChange={handleInsProdDefChange}/>
+                            </div>
+                            <div className="input-container">
+                                <input type="text" name="insProdPremPerc" placeholder="Премия" onChange={handleInsProdPremPerc}/>
+                            </div>
+                            <div className="input-container">
+                                <input type="text" name="insProdComissPerc" placeholder="Комисионна" onChange={handleInsProdComissPerc}/>
                             </div>
                             <div className="input-container">
                                 <select
